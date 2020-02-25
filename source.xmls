@@ -1,0 +1,5 @@
+if
+	equals arg1="test" arg2="test"
+	then
+		delete include="test"
+			fileset dir="test"
