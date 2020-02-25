@@ -22,6 +22,9 @@ const argv = require('yargs')
                     nargs: 0,
                     type: 'boolean'
                 })
+                .example('$0 -i source.xmls -o output.xml')
+                .example('$0 -s')
+                .example('$0')
                 .help('h')
                 .alias('h', 'help')
                 .argv;
