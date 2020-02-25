@@ -26,8 +26,10 @@ const argv = require('yargs')
                 .alias('h', 'help')
                 .argv;
 
+const log_ = argv.outputfile === "stdout" ? false : true;
 function log(...args){
-    console.log(new Date().toISOString(), ...args);
+    if(log_ ===true)
+        console.log(new Date().toISOString(), ...args);
 }
 
 const source = argv.inputfile;
@@ -72,11 +74,15 @@ readInterface.on('close', function() {
     flushBluePrint(blueprint);
     log("blueprint flushed");
     log("opening output file", target);
-    const file = fs.createWriteStream('output.xml');
-    file.on('error', function(err) { log("error opening file:", err) });
-    log("writing lines");
-    file.write(lines.join('\n'));
-    file.end();
+    if(argv.outputfile === "stdout"){
+        process.stdout.write(lines.join('\n'));
+    }else{
+        const file = fs.createWriteStream('output.xml');
+        file.on('error', function(err) { log("error opening file:", err) });
+        log("writing lines");
+        file.write(lines.join('\n'));
+        file.end();
+    }
     log("writing successful");
 });
 
