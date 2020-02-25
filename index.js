@@ -67,11 +67,13 @@ readInterface.on('line', function(line) {
         log("blueprint flushed");
     }
     const elements = line.match(/(?:[^\s"]+|"[^"]*")+/g) 
-    blueprint.push({
-        depth: depth,
-        name: elements[0],
-        args: elements.slice(1)
-    });
+    if(typeof elements !== 'undefined' && elements !== null){
+        blueprint.push({
+            depth: depth,
+            name: elements[0],
+            args: elements.slice(1)
+        });
+    }
 });
 readInterface.on('close', function() {
     flushBluePrint(blueprint);
