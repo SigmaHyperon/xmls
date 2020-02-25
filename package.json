@@ -1,0 +1,13 @@
+{
+	"name": "xmls",
+	"description": "XMLScript Precompiler",
+	"authors": "SigmaHyperon",
+	"version": "1.0.0",
+	"bin": "index.js",
+	"dependencies": {
+		"yargs": "^15.1.0"
+	},
+	"scripts": {
+		"build": "pkg --out-path bin ."
+	}
+}

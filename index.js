@@ -1,10 +1,37 @@
 const fs = require('fs');
 const readline = require('readline');
-const source = "source.xmls";
-const target = "output.xml";
+const argv = require('yargs')
+                .option('i', {
+                    alias: 'inputfile',
+                    default: 'source.xmls',
+                    describe: 'input file',
+                    nargs: 1,
+                    type: 'string'
+                })
+                .option('o', {
+                    alias: 'outputfile',
+                    default: 'output.xml',
+                    describe: 'output file',
+                    nargs: 1,
+                    type: 'string'
+                })
+                .option('s', {
+                    alias: 'spaces',
+                    default: false,
+                    describe: 'assume indentation using spaces',
+                    nargs: 0,
+                    type: 'boolean'
+                })
+                .help('h')
+                .alias('h', 'help')
+                .argv;
+
 function log(...args){
     console.log(new Date().toISOString(), ...args);
 }
+
+const source = argv.inputfile;
+const target = argv.outputfile;
 
 log(`opening source file`, source);
 const readInterface = readline.createInterface({
@@ -19,9 +46,16 @@ const lines = [];
 log(`reading content`);
 readInterface.on('line', function(line) {
     let depth = 0;
-    while (line.charAt(0) == "\t"){
-        line = line.substr(1);
-        depth++;
+    if(argv.spaces){
+        while (line.substr(0,4) == "    "){
+            line = line.substr(4);
+            depth++;
+        }
+    } else {
+        while (line.charAt(0) == "\t"){
+            line = line.substr(1);
+            depth++;
+        }
     }
     if(depth == 0){
         flushBluePrint(blueprint);
